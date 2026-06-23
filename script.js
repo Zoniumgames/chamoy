@@ -1,13 +1,14 @@
 // CONFIGURACIÓN: reemplaza con tu config de Firebase (ver instrucciones)
-const firebaseConfig = {
-  apiKey: "AIzaSyC6jdpBCgNou-PgAjYXai6mSLe4IHKkLsQ",
-  authDomain: "chat-777-444.firebaseapp.com",
-  projectId: "chat-777-444",
-  storageBucket: "chat-777-444.firebasestorage.app",
-  messagingSenderId: "812716475458",
-  appId: "1:812716475458:web:d7ca1981ec0f6e11a899db",
-  measurementId: "G-W349S6TPH1"
-};
+
+//const firebaseConfig = {
+  //apiKey: "AIzaSyC6jdpBCgNou-PgAjYXai6mSLe4IHKkLsQ",
+  //authDomain: "chat-777-444.firebaseapp.com",
+  //projectId: "chat-777-444",
+  //storageBucket: "chat-777-444.firebasestorage.app",
+  //messagingSenderId: "812716475458",
+  //appId: "1:812716475458:web:d7ca1981ec0f6e11a899db",
+  //measurementId: "G-W349S6TPH1"
+//};
 
 
 let db, storage;
@@ -50,8 +51,7 @@ async function tryEnter() {
   }
 
   try {
-    const res = await fetch("https://chat-api.geovanny-ramos-4444.workers.dev
-/login", {
+    const res = await fetch("https://chat-api.geovanny-ramos-4444.workers.dev/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
