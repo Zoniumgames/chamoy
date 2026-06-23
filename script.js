@@ -50,7 +50,8 @@ async function tryEnter() {
   }
 
   try {
-    const res = await fetch("https://TU-WORKER.workers.dev/login", {
+    const res = await fetch("chat-api.geovanny-ramos-4444.workers.dev
+/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
