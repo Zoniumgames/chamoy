@@ -9,7 +9,6 @@ const firebaseConfig = {
   measurementId: "G-W349S6TPH1"
 };
 
-const APP_PASSWORD = "rodamarciano";
 
 let db, storage;
 let currentName = null;
@@ -38,18 +37,48 @@ logoutBtn.addEventListener('click', logout);
 sendBtn.addEventListener('click', sendMessage);
 textInput.addEventListener('keydown', e => { if(e.key==='Enter') sendMessage(); });
 
-function tryEnter(){
+
+async function tryEnter() {
   loginError.textContent = '';
+
   const name = nameInput.value.trim();
   const pwd = passwordInput.value;
-  if(!name){ loginError.textContent = 'Ingresa tu nombre.'; return; }
-  if(pwd !== APP_PASSWORD){ loginError.textContent = 'Clave incorrecta.'; return; }
 
-  initFirebase();
-  currentName = name;
-  sessionStorage.setItem('chat_name', currentName);
-  showChat();
+  if (!name) {
+    loginError.textContent = 'Ingresa tu nombre.';
+    return;
+  }
+
+  try {
+    const res = await fetch("https://TU-WORKER.workers.dev/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        password: pwd
+      })
+    });
+
+    const data = await res.json();
+
+    if (!data.ok) {
+      loginError.textContent = 'Clave incorrecta.';
+      return;
+    }
+
+    // login correcto
+    currentName = name;
+    sessionStorage.setItem('chat_name', currentName);
+    showChat();
+
+  } catch (err) {
+    console.error(err);
+    loginError.textContent = 'Error de conexión.';
+  }
 }
+
+
 
 function logout(){
   sessionStorage.removeItem('chat_name');
