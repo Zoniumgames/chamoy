@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link type="text/css" rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+    <!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chat Grupal</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+</head>
+<body>
+  <div id="login-screen" class="overlay">
+    <div class="card">
+      <h2>Ingresar al chat</h2>
+      <input id="nameInput" placeholder="Tu nombre" maxlength="30" />
+      <input id="passwordInput" type="password" placeholder="Clave de acceso" />
+      <button id="enterBtn">Entrar</button>
+      <p class="hint">Solicita la clave al creador.</p>
+      <p id="loginError" class="error"></p>
+    </div>
+  </div>
+
+  <div id="chat-screen" class="hidden">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="avatar">📱</div>
+        <div>
+          <div class="title">Chat Grupal</div>
+          <div class="subtitle">Todos pueden ver los mensajes</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button id="logoutBtn">Salir</button>
+      </div>
+    </header>
+
+    <main id="messages" class="messages"></main>
+
+    <footer class="composer">
+      <input id="textInput" placeholder="Escribe un mensaje..." />
+      
+      <button id="sendBtn">Enviar</button>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+    <script type="module" src="script.js"></script>
+  </body>
+</html>

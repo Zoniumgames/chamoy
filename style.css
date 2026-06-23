@@ -1,0 +1,302 @@
+:root {
+  --bg: #a370f7;         /* Fondo púrpura vibrante como en image_8e0e02.png */
+  --me: #adff2f;         /* Tus burbujas en verde neón/brillante */
+  --other: #ffc0cb;      /* Burbujas de los demás en rosa pastel brutalista uniforme */
+  --accent: #ffdf00;     /* Amarillo saturado para botones destacados */
+  --dark: #000000;       /* Negro puro para los trazos obligatorios */
+  --window-bg: #ffffff;  /* Fondo de contenedores principales */
+  font-family: "Impact", "Arial Black", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--dark);
+}
+
+/* --- PANTALLA DE LOGIN --- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 2000;
+}
+
+.card {
+  background: var(--window-bg);
+  padding: 24px;
+  border: 4px solid var(--dark);
+  border-radius: 0px;
+  width: 340px;
+  box-shadow: 8px 8px 0px var(--dark);
+  text-align: center;
+}
+
+.card h2 {
+  margin-top: 0;
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  letter-spacing: -1px;
+}
+
+.card input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 3px solid var(--dark);
+  border-radius: 0px;
+  font-size: 1rem;
+  font-weight: bold;
+  background: #fff;
+}
+
+.card button {
+  width: 100%;
+  padding: 12px;
+  background: var(--accent);
+  color: var(--dark);
+  font-weight: 900;
+  text-transform: uppercase;
+  border: 3px solid var(--dark);
+  border-radius: 0px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px var(--dark);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.card button:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px var(--dark);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.error {
+  color: #df0000;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+/* --- ESTRUCTURA DEL CHAT --- */
+#chat-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+.topbar {
+  height: 64px;
+  background: #00f0ff; /* Cyan brillante estilo image_8e0a60.png */
+  color: var(--dark);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 4px solid var(--dark);
+  flex-shrink: 0;
+}
+
+.topbar .title {
+  font-weight: 900;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  background: #fff;
+  border: 3px solid var(--dark);
+  border-radius: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-size: 1.5rem;
+}
+
+.topbar-right button {
+  background: #ff4500;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 2px solid var(--dark);
+  padding: 6px 12px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px var(--dark);
+}
+
+/* --- CONTENEDOR DE MENSAJES (Efecto cuadrícula) --- */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background-color: #f3effa;
+  background-size: 20px 20px;
+  background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+  padding-bottom: 90px;
+}
+
+/* --- BURBUJAS DE MENSAJE --- */
+.message {
+  max-width: 80%;
+  padding: 12px 16px;
+  border: 3px solid var(--dark) !important;
+  border-radius: 0px !important;
+  display: flex;
+  flex-direction: column;
+  word-break: break-word;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  box-shadow: 6px 6px 0px var(--dark);
+}
+
+.me {
+  align-self: flex-end;
+  background: var(--me);
+}
+
+.other {
+  align-self: flex-start;
+  background: var(--other);
+}
+
+.meta {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 900;
+  color: #333;
+  margin-bottom: 8px;
+  border-bottom: 2px dashed var(--dark);
+  padding-bottom: 4px;
+}
+
+.message img {
+  max-width: 100%;
+  border: 3px solid var(--dark);
+  border-radius: 0px;
+  margin-top: 8px;
+}
+
+.message .reply-box {
+  font-size: 11px;
+  background: rgba(255,255,255,0.6);
+  border: 2px solid var(--dark);
+  padding: 6px;
+  margin-bottom: 8px;
+}
+
+/* 🛠️ FIJADO: LA CAJA DE REACCIONES DE LOS MENSAJES (SOLO CSS)
+   Esta regla captura el contenedor exacto que genera tu JS donde se acumulan las 
+   reacciones dadas al mensaje, estilizándolo como una mini ventana neo-brutalista suelta. */
+.message div[style*="font-size: 14px"] {
+  align-self: flex-start !important;
+  background: #ffffff !important;
+  border: 2px solid var(--dark) !important;
+  padding: 4px 10px !important;
+  margin-top: 10px !important;
+  margin-bottom: 4px !important;
+  font-size: 14px !important;
+  letter-spacing: 3px;
+  display: inline-flex !important;
+  box-shadow: 3px 3px 0px var(--dark) !important;
+}
+
+/* Botones de acción inferiores (Responder e iconos para reaccionar) */
+.message button {
+  margin-top: 6px;
+  margin-right: 6px;
+  cursor: pointer;
+  border: 2px solid var(--dark);
+  background: #fff;
+  font-weight: bold;
+  padding: 2px 6px;
+  box-shadow: 2px 2px 0px var(--dark);
+}
+
+.message button:hover {
+  background: var(--accent);
+}
+
+/* --- COMPOSER (BARRA INFERIOR) --- */
+.composer {
+  display: flex;
+  padding: 12px;
+  gap: 12px;
+  background: #ffffff;
+  border-top: 4px solid var(--dark);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+#textInput {
+  flex: 1;
+  padding: 14px;
+  border-radius: 0px;
+  border: 3px solid var(--dark);
+  outline: none;
+  font-size: 1rem;
+  font-weight: bold;
+  background: #fff;
+}
+
+#textInput:focus {
+  background: #fffde6;
+}
+
+.composer button {
+  background: var(--accent);
+  color: var(--dark);
+  border: 3px solid var(--dark);
+  padding: 0 24px;
+  border-radius: 0px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  box-shadow: 4px 4px 0px var(--dark);
+  transition: transform 0.05s, box-shadow 0.05s;
+}
+
+.composer button:active:not(:disabled) {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px var(--dark);
+}
+
+.composer button:disabled {
+  background: #aaa;
+  box-shadow: 0px 0px 0px var(--dark);
+  cursor: not-allowed;
+}
