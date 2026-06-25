@@ -3,6 +3,7 @@ const WORKER_URL = "https://chat-api.geovanny-ramos-4444.workers.dev";
 let currentName = null;
 let replyTo = null;
 let lastMessages = [];
+let pollInterval = null;
 
 // DOM
 const loginScreen = document.getElementById('login-screen');
@@ -18,10 +19,10 @@ const textInput = document.getElementById('textInput');
 const sendBtn = document.getElementById('sendBtn');
 
 enterBtn.addEventListener('click', tryEnter);
-passwordInput.addEventListener('keydown', e => { if(e.key === 'Enter') tryEnter(); });
+passwordInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryEnter(); });
 logoutBtn.addEventListener('click', logout);
 sendBtn.addEventListener('click', sendMessage);
-textInput.addEventListener('keydown', e => { if(e.key === 'Enter') sendMessage(); });
+textInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
 
 /* ---------------- LOGIN ---------------- */
 async function tryEnter() {
@@ -64,9 +65,15 @@ async function tryEnter() {
 /* ---------------- LOGOUT ---------------- */
 function logout() {
   sessionStorage.removeItem('chat_name');
+
   currentName = null;
+  replyTo = null;
+
+  textInput.placeholder = "Escribe un mensaje...";
+
   loginScreen.classList.remove('hidden');
   chatScreen.classList.add('hidden');
+
   stopPolling();
 }
 
@@ -76,19 +83,22 @@ function showChat() {
   chatScreen.classList.remove('hidden');
 }
 
-/* ---------------- POLLING (reemplaza onSnapshot) ---------------- */
-let pollInterval = null;
-
+/* ---------------- POLLING CONTROLADO ---------------- */
 function startPolling() {
+  stopPolling(); // evita duplicados
+
   loadMessages();
-  pollInterval = setInterval(loadMessages, 2000); // cada 2s
+  pollInterval = setInterval(loadMessages, 1500); // más fluido
 }
 
 function stopPolling() {
-  clearInterval(pollInterval);
+  if (pollInterval) {
+    clearInterval(pollInterval);
+    pollInterval = null;
+  }
 }
 
-/* ---------------- LOAD MESSAGES ---------------- */
+/* ---------------- LOAD ---------------- */
 async function loadMessages() {
   try {
     const res = await fetch(WORKER_URL + "/messages");
@@ -97,37 +107,36 @@ async function loadMessages() {
     renderMessages(data);
 
   } catch (err) {
-    console.error(err);
+    console.error("loadMessages error:", err);
   }
 }
 
-/* ---------------- RENDER LISTA ---------------- */
+/* ---------------- RENDER LIST ---------------- */
 function renderMessages(messages) {
 
-  const isSame =
+  const same =
     JSON.stringify(messages) === JSON.stringify(lastMessages);
 
-  if (isSame) return;
+  if (same) return;
+
   lastMessages = messages;
 
-  const shouldAutoScroll =
-    messagesEl.scrollTop + messagesEl.clientHeight >= messagesEl.scrollHeight - 100;
+  const wasAtBottom =
+    messagesEl.scrollTop + messagesEl.clientHeight >= messagesEl.scrollHeight - 120;
 
   messagesEl.innerHTML = '';
 
-  messages.forEach(msg => renderMessage(msg));
+  messages.forEach(renderMessage);
 
-  if (shouldAutoScroll) {
+  if (wasAtBottom) {
     smartScroll(true);
   }
 }
 
-/* ---------------- SCROLL INTELIGENTE ---------------- */
+/* ---------------- SCROLL ---------------- */
 function smartScroll(force = false) {
-  const threshold = 120;
-
   const atBottom =
-    messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight < threshold;
+    messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight < 120;
 
   if (atBottom || force) {
     messagesEl.scrollTo({
@@ -157,6 +166,7 @@ async function sendMessage() {
 
     textInput.value = '';
     replyTo = null;
+    textInput.placeholder = "Escribe un mensaje...";
 
     loadMessages();
 
@@ -167,15 +177,20 @@ async function sendMessage() {
   }
 }
 
-/* ---------------- REACCIONES ---------------- */
+/* ---------------- REACT ---------------- */
 async function addReaction(id, emoji) {
-  await fetch(WORKER_URL + "/react", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id, emoji })
-  });
+  try {
+    await fetch(WORKER_URL + "/react", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, emoji })
+    });
 
-  loadMessages();
+    loadMessages();
+
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 /* ---------------- REPLY ---------------- */
@@ -188,7 +203,7 @@ function setReply(msg) {
   textInput.placeholder = `Respondiendo a ${msg.name}...`;
 }
 
-/* ---------------- RENDER MENSAJE ---------------- */
+/* ---------------- MESSAGE RENDER ---------------- */
 function renderMessage(msg) {
 
   const wrapper = document.createElement('div');
@@ -220,8 +235,7 @@ function renderMessage(msg) {
   replyBtn.textContent = "Responder";
   replyBtn.onclick = () => setReply(msg);
 
-  const emojis = ["👍","❤️","😂","😢","⭐"];
-
+  const emojis = ["👍", "❤️", "😂", "😢", "⭐"];
   const reactBox = document.createElement('span');
 
   emojis.forEach(e => {
@@ -236,7 +250,7 @@ function renderMessage(msg) {
 
   wrapper.appendChild(actions);
 
-  /* reacciones visibles */
+  /* reacciones */
   if (msg.reactions?.length) {
     const r = document.createElement('div');
     r.style.fontSize = '14px';
