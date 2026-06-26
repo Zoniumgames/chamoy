@@ -8,6 +8,15 @@
   font-family: "Impact", "Arial Black", Arial, sans-serif;
 }
 
+.climate-crisis-<uniquifier> {
+  font-family: "Climate Crisis", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "YEAR" 1990;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -90,6 +99,12 @@ body {
   margin-top: 8px;
 }
 
+h2.login-title {
+  font-family: "Climate Crisis";
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 /* --- ESTRUCTURA DEL CHAT --- */
 #chat-screen {
   display: flex;
@@ -111,15 +126,17 @@ body {
 }
 
 .topbar .title {
-  font-weight: 900;
+  font-weight: 10;
   font-size: 1.3rem;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
+  font-family: "Climate crisis";
 }
 
 .subtitle {
   font-size: 0.8rem;
-  font-family: Arial, sans-serif;
-  font-weight: bold;
+  font-family: Impact, Haettenschweiler;
+  font-weight: 1000;
 }
 
 .topbar-left {
@@ -138,6 +155,7 @@ body {
   justify-content: center;
   margin-right: 12px;
   font-size: 1.5rem;
+  color: #f38d51;
 }
 
 .topbar-right button {
@@ -159,7 +177,7 @@ body {
   flex-direction: column;
   gap: 16px;
   padding: 20px;
-  background-color: #f3effa;
+  background-color: #b8a5d8;
   background-size: 20px 20px;
   background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
                     linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
@@ -252,7 +270,7 @@ body {
   display: flex;
   padding: 12px;
   gap: 12px;
-  background: #ffffff;
+  background: #dd8282;
   border-top: 4px solid var(--dark);
   position: fixed;
   bottom: 0;
@@ -269,7 +287,7 @@ body {
   outline: none;
   font-size: 1rem;
   font-weight: bold;
-  background: #fff;
+  background: #fdf5fd;
 }
 
 #textInput:focus {
